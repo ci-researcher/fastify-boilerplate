@@ -20,10 +20,12 @@ Then('I receive my user ID as a string', function (this: CustomWorld) {
   assert.deepStrictEqual(typeof this.response.json().id, 'string');
 });
 
-Then('I receive status code 201 and a user ID other than {string}', function (this: CustomWorld, id: string) {
-  const response = this.response;
-  assert.strictEqual(response.statusCode, 201);
-  assert.notStrictEqual(response.json().id, id);
+Then(  // Fixed the formatter issue https://github.com/ci-researcher/fastify-boilerplate/actions/runs/44385487247/job/135088759737
+  'I receive status code 201 and a user ID other than {string}',
+  function (this: CustomWorld, id: string) {
+    const response = this.response;
+    assert.strictEqual(response.statusCode, 201);
+    assert.notStrictEqual(response.json().id, id);
 });
 
 Then(
