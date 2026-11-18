@@ -39,7 +39,7 @@ Then(
   },
 );
 
-Then('I send a request to delete my user', async function (this: CustomWorld) {
+When('I send a request to delete my user', async function (this: CustomWorld) {
   const response = await this.server.inject({
     method: 'DELETE',
     url: `/api/v1/users/${this.response.json().id}`,

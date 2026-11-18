@@ -34,7 +34,7 @@ Feature: Create a user
       | <Email> | <Country> | <Street> | <PostalCode> |
     When I send a request to create a user
     Then I receive an error "Bad Request" with status code 400 and a correlation ID
-    And the first error points to "<Path>"
+    And the first sub-error points to "<Path>"
 
     Examples:
       | Email          | Country | Street      | PostalCode | Path        |

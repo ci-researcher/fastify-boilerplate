@@ -19,7 +19,7 @@ Then('the error reason is {string}', function (this: CustomWorld, reason: string
   assert.strictEqual(this.response.json<ApiErrorResponse>().reason, reason);
 });
 
-Then('the first error points to {string}', function (this: CustomWorld, path: string) {
+Then('the first sub-error points to {string}', function (this: CustomWorld, path: string) {
   const { subErrors } = this.response.json<ApiErrorResponse>();
   assert.strictEqual(subErrors?.[0]?.path, path);
 });
