@@ -25,7 +25,7 @@ Feature: Create a user
       | email              | country | street      | postalCode |
       | John.Doe@Gmail.com | England | Road Avenue | 29145      |
     When I send a request to create a user
-    Then I receive an error "Conflict" with status code 409 and a correlation ID
+    Then I receive an error response "Conflict" with status code 409 and a correlation ID
     And the error reason is "USER_ALREADY_EXISTS"
 
   Scenario Outline: I try to create a user with invalid data
@@ -33,7 +33,7 @@ Feature: Create a user
       | email   | country   | street   | postalCode   |
       | <Email> | <Country> | <Street> | <PostalCode> |
     When I send a request to create a user
-    Then I receive an error "Bad Request" with status code 400 and a correlation ID
+    Then I receive an error response "Bad Request" with status code 400 and a correlation ID
     And the first sub-error points to "<Path>"
 
     Examples:

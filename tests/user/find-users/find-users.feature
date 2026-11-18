@@ -23,7 +23,7 @@ Feature: Find users
 
   Scenario Outline: I try to list users with invalid pagination
     When I request the users with "<Query>"
-    Then I receive an error "Bad Request" with status code 400
+    Then I receive an error response "Bad Request" with status code 400 and a correlation ID
 
     Examples:
       | Query        |

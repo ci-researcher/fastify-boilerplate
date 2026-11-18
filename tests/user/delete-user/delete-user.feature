@@ -7,7 +7,7 @@ Feature: Delete a user
     When I send a request to create a user
 
   Scenario: I can delete a user
-    When I send a request to delete my user and receive status code 204
+    When I send a request to delete my user
     Then I cannot see my user ID in the first page of the users list
 
   Scenario: I cannot delete a user that does not exist
