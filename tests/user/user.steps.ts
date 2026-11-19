@@ -16,18 +16,22 @@ When('I send a request to create a user', async function (this: CustomWorld) {
   });
 });
 
-Then('I receive my user ID', function (this: CustomWorld) {
+Then('I receive my user ID as a string', function (this: CustomWorld) {
   assert.deepStrictEqual(typeof this.response.json().id, 'string');
 });
 
-Then('I receive a user ID other than {string}', function (this: CustomWorld, id: string) {
-  const response = this.response;
-  assert.strictEqual(response.statusCode, 201);
-  assert.notStrictEqual(response.json().id, id);
-});
+Then(
+  // Fixed the formatter issue https://github.com/ci-researcher/fastify-boilerplate/actions/runs/44385487247/job/135088759737
+  'I receive status code 201 and a user ID other than {string}',
+  function (this: CustomWorld, id: string) {
+    const response = this.response;
+    assert.strictEqual(response.statusCode, 201);
+    assert.notStrictEqual(response.json().id, id);
+  },
+);
 
 Then(
-  /^I (can|cannot) see my user in a list of all users$/,
+  /^I (can|cannot) see my user ID in the first page of the users list$/,
   async function (this: CustomWorld, can: string) {
     const response = await this.server.inject({ method: 'GET', url: '/api/v1/users' });
     const users = response.json<Paginated<UserResponseDto>>();
@@ -39,7 +43,7 @@ Then(
   },
 );
 
-Then('I send a request to delete my user', async function (this: CustomWorld) {
+When('I send a request to delete my user', async function (this: CustomWorld) {
   const response = await this.server.inject({
     method: 'DELETE',
     url: `/api/v1/users/${this.response.json().id}`,

@@ -5,27 +5,27 @@ Feature: Create a user
       | email              | country | street      | postalCode |
       | john.doe@gmail.com | England | Road Avenue | 29145      |
     When I send a request to create a user
-    Then I receive my user ID
-    And I can see my user in a list of all users
+    Then I receive my user ID as a string
+    And I can see my user ID in the first page of the users list
 
   Scenario: The server ignores an id and dates sent with the user
     Given user profile data
       | email              | country | street      | postalCode | id                                   | createdAt |
       | john.doe@gmail.com | England | Road Avenue | 29145      | 2cdc8ab1-6d50-49cc-ba14-54e4ac7ec231 | yesterday |
     When I send a request to create a user
-    Then I receive a user ID other than "2cdc8ab1-6d50-49cc-ba14-54e4ac7ec231"
+    Then I receive status code 201 and a user ID other than "2cdc8ab1-6d50-49cc-ba14-54e4ac7ec231"
 
   Scenario: I cannot create two users whose emails differ only in case
     Given user profile data
       | email              | country | street      | postalCode |
       | john.doe@gmail.com | England | Road Avenue | 29145      |
     And I send a request to create a user
-    And I receive my user ID
+    And I receive my user ID as a string
     And user profile data
       | email              | country | street      | postalCode |
       | John.Doe@Gmail.com | England | Road Avenue | 29145      |
     When I send a request to create a user
-    Then I receive an error "Conflict" with status code 409
+    Then I receive an error response "Conflict" with status code 409 and a correlation ID
     And the error reason is "USER_ALREADY_EXISTS"
 
   Scenario Outline: I try to create a user with invalid data
@@ -33,8 +33,8 @@ Feature: Create a user
       | email   | country   | street   | postalCode   |
       | <Email> | <Country> | <Street> | <PostalCode> |
     When I send a request to create a user
-    Then I receive an error "Bad Request" with status code 400
-    And the error points to "<Path>"
+    Then I receive an error response "Bad Request" with status code 400 and a correlation ID
+    And the first sub-error points to "<Path>"
 
     Examples:
       | Email          | Country | Street      | PostalCode | Path        |
